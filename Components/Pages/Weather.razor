@@ -1,0 +1,83 @@
+﻿@page "/weather"
+
+@using BlazorApp3
+@using BlazorBootstrap
+@using System.ComponentModel.DataAnnotations
+
+@rendermode InteractiveServer
+
+<EditForm EditContext="editContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText id="name"
+                   @bind-Value="model.Name"
+                   class="form-control"
+                   @onblur="HandleOnBlur" />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email"
+                   @bind-Value="model.Email"
+                   class="form-control"
+                   @onblur="HandleOnBlur" />
+    </div>
+
+    <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <InputText id="phoneNumber"
+                   @bind-Value="model.PhoneNumber"
+                   class="form-control"
+                   @onblur="HandleOnBlur" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="display: none;">Submit</button>
+</EditForm>
+
+@code {
+    private MyModel model = new MyModel();
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(model);
+    }
+
+    private async Task HandleOnBlur()
+    {
+        // Trigger form validation
+        var isValid = editContext.Validate();
+
+        // Trigger form submission if valid
+        if (isValid)
+        {
+            await HandleValidSubmit();
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Handle form submission
+        Console.WriteLine("Form Submitted Successfully");
+        Console.WriteLine($"Name: {model.Name}");
+        Console.WriteLine($"Email: {model.Email}");
+        Console.WriteLine($"Phone Number: {model.PhoneNumber}");
+    }
+
+    public class MyModel
+    {
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+    }
+}

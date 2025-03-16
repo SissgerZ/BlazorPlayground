@@ -1,0 +1,48 @@
+﻿@using BlazorApp3.Services
+@using BlazorBootstrap
+
+@inject AlertService CalloutService
+
+@rendermode InteractiveServer
+
+@if (AlertOption != null)
+{
+    <div>
+        <Alert Color="AlertOption.Color"
+               Dismissable="AlertOption.Dismissible"
+               OnClosed="DismissAlert">
+            @if (AlertOption.IconName is not default(IconName))
+            {
+                <Icon Name="@AlertOption.IconName" class="me-2"></Icon>
+            }
+            @AlertOption.Message
+        </Alert>
+
+    </div>
+}
+
+@code {
+    private AlertOption? AlertOption = default!;
+
+    protected override void OnInitialized()
+    {
+        CalloutService.OnCalloutChanged += UpdateAlert;
+
+        AlertOption = CalloutService.GetCurrentAlertOrDefault();
+    }
+
+    private void UpdateAlert()
+    {
+        AlertOption = CalloutService.GetCurrentAlertOrDefault();
+
+        StateHasChanged();
+    }
+
+    private void DismissAlert()
+    {
+        if (AlertOption != null)
+        {
+            CalloutService.Dismiss(AlertOption);
+        }
+    }
+}

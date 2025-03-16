@@ -1,0 +1,58 @@
+﻿@using BlazorApp3.Services
+@using BlazorBootstrap
+
+@inject AlertService AlertService
+
+@rendermode InteractiveServer
+
+<button @onclick="StartLoading">Start Loading</button>
+<button @onclick="StopLoading">Stop Loading</button>
+
+<br/>
+<br/>
+
+<button Color="ButtonColor.Dark" @onclick="ShowDangerAlert">Show Danger Callout</button>
+<button Color="ButtonColor.Success" @onclick="ShowSuccessAlert">Show Success Callout</button>
+
+@code {
+    private readonly Guid Id = Guid.NewGuid();
+
+    [Parameter]
+    public EventCallback<(Guid Id, bool IsLoading)> OnLoadingStateChanged { get; set; }
+
+    private async Task StartLoading()
+    {
+        await OnLoadingStateChanged.InvokeAsync((Id, true));
+    }
+
+    private async Task StopLoading()
+    {
+        await OnLoadingStateChanged.InvokeAsync((Id, false));
+    }
+
+    // --------------------------------------
+
+    private void ShowDangerAlert()
+    {
+        var calloutOption = new AlertOption
+            {
+                Message = "This is a danger callout message.",
+                Color = AlertColor.Danger,
+                Dismissible = true
+            };
+
+        AlertService.Show(calloutOption);
+    }
+
+    private void ShowSuccessAlert()
+    {
+        var calloutOption = new AlertOption
+            {
+                Message = "This is a success callout message.",
+                Color = AlertColor.Success,
+                IconName = IconName.InfoCircleFill
+            };
+
+        AlertService.Show(calloutOption);
+    }
+}

@@ -1,0 +1,67 @@
+﻿@page "/key-values"
+
+@rendermode InteractiveServer
+
+<EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+
+    <ValidationMessage For="() => YourViewModel.KeyValuePairs" />
+
+    @foreach (var kvp in YourViewModel.KeyValuePairs.Select((pair, index) => new { Pair = pair, Index = index }))
+    {
+        <InputText @bind-Value="kvp.Pair.Key" @oninput="e => OnFieldChanged(kvp.Index, nameof(kvp.Pair.Key), (string)((ChangeEventArgs)e).Value)" />
+        <ValidationMessage For="() => kvp.Pair.Key" />
+
+        <InputText @bind-Value="kvp.Pair.Value" @oninput="e => OnFieldChanged(kvp.Index, nameof(kvp.Pair.Value), (string)((ChangeEventArgs)e).Value)" />
+        <ValidationMessage For="() => kvp.Pair.Value" />
+
+        <br />
+    }
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private YourViewModel YourViewModel = new YourViewModel();
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        YourViewModel = new YourViewModel
+            {
+                KeyValuePairs = new List<KeyValuePairs<string, string>>
+            {
+                new KeyValuePairs<string, string>{ Key = "key", Value = "value" },
+                new KeyValuePairs<string, string>{ Key = "key", Value = "value2" },
+            }
+            };
+
+        editContext = new EditContext(YourViewModel);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        editContext.Validate();
+    }
+    
+    private void OnFieldChanged(int index, string fieldName, string newValue)
+    {
+        if (fieldName == nameof(KeyValuePairs<string, string>.Key))
+        {
+            YourViewModel.KeyValuePairs[index].Key = newValue;
+        }
+        else if (fieldName == nameof(KeyValuePairs<string, string>.Value))
+        {
+            YourViewModel.KeyValuePairs[index].Value = newValue;
+        }
+        
+        var fieldIdentifier = new FieldIdentifier(YourViewModel, nameof(YourViewModel.KeyValuePairs));
+        editContext.NotifyFieldChanged(fieldIdentifier);
+    }
+
+    private void HandleValidSubmit()
+    {
+        // Handle the valid submission
+    }
+}

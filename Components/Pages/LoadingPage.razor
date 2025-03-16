@@ -1,0 +1,32 @@
+﻿@page "/loading-page"
+
+@rendermode InteractiveServer
+
+<h3>Parent Page</h3>
+<p>Aggregate Loading State: @(IsAnyComponentLoading ? "Loading..." : "All Loaded")</p>
+
+<LoadingComponent OnLoadingStateChanged="UpdateLoadingState" />
+
+<hr/>
+
+<LoadingComponent OnLoadingStateChanged="UpdateLoadingState" />
+
+<hr />
+
+<LoadingComponent OnLoadingStateChanged="UpdateLoadingState" />
+
+<hr />
+
+<AlertAggregator />
+
+
+@code {
+    private Dictionary<Guid, bool> ComponentStates = new();
+    private bool IsAnyComponentLoading => ComponentStates.Values.Any(state => state);
+
+    private void UpdateLoadingState((Guid Id, bool IsLoading) state)
+    {
+        ComponentStates[state.Id] = state.IsLoading;
+        StateHasChanged(); // Update UI
+    }
+}

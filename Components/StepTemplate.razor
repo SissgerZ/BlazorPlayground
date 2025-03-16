@@ -1,0 +1,10 @@
+﻿@using BlazorBootstrap
+@using Microsoft.AspNetCore.Components
+
+@code {
+    [Parameter] public RenderFragment TitleTemplate { get; set; }
+    [Parameter] public RenderFragment ContentTemplate { get; set; }
+    [Parameter] public IconName Icon { get; set; }
+    [Parameter] public string Id { get; set; }
+    [Parameter] public int Index { get; set; }
+}

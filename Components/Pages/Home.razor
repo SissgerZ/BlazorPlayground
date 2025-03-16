@@ -1,0 +1,37 @@
+﻿@page "/"
+
+@using BlazorBootstrap
+@* 
+<style>
+    .form-check-input {
+    height: 1.5em;
+    }
+
+    .form-switch .form-check-input {
+    width: 3.5em;
+    }
+
+    .form-check-input:checked {
+    background-color: red;
+    border-color: red;
+    }
+</style> *@
+
+<PageTitle>Home</PageTitle>
+
+<div class="mb-4">
+    <Switch @ref="switch1" @bind-Value="agree" />
+
+    <Button @onclick="Enable">
+        Test
+    </Button>
+</div>
+
+
+@code {
+    private Switch switch1 = default!;
+    private bool agree = true;
+
+    private void Disable() => switch1.Disable();
+    private void Enable() => switch1.Enable();
+}

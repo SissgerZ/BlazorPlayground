@@ -1,0 +1,110 @@
+﻿@using BlazorBootstrap
+
+@inherits ComponentBase
+
+<div class="container-fluid p-2 align-items-center">
+    <div class="d-flex justify-content-around">
+        @foreach (var step in Steps)
+        {
+            <Button @onclick='() => StepFunction(step.Id)'
+                    Class="rounded-pill"
+                    Color="@(GetButtonColor(step.Index))"
+                    Disabled="@(IsDisabled(step.Index))">
+                <Icon Name="@(step.Icon)"></Icon>
+            </Button>
+            @if (step.Index < Steps.Count)
+            {
+                <span class="@(GetLineClass(step.Index + 1)) w-25 rounded mt-auto mb-auto me-1 ms-1" style="height: 0.6rem"></span>
+            }
+        }
+    </div>
+</div>
+
+@foreach (var step in Steps)
+{
+    <div class="collapse @(activeStep == step.Id ? "show" : "")" id="@step.Id">
+        <h2>@step.Title</h2>
+        <p>@step.Description</p>
+    </div>
+}
+
+<div>
+    <Button @onclick='Previous'
+            Class="rounded-pill"
+            Color=@ButtonColor.Secondary>
+        Back
+    </Button>
+
+    <Button @onclick='Next'
+            Class="rounded-pill"
+            Color=@ButtonColor.Primary>
+        Next
+    </Button>
+</div>
+
+@code {
+    [Parameter] public List<Step> Steps { get; set; } = new List<Step>();
+
+    private string activeStep = "step1";
+
+    private void StepFunction(string stepId)
+    {
+        var selectedStepIndex = GetStepIndex(stepId);
+
+        // Change the active step only if the clicked step has a smaller or equal index
+        if (selectedStepIndex <= GetStepIndex(activeStep))
+        {
+            activeStep = stepId;
+        }
+    }
+
+    private bool IsDisabled(int stepIndex)
+    {
+        return stepIndex > GetStepIndex(activeStep);
+    }
+
+    private ButtonColor GetButtonColor(int stepIndex)
+    {
+        return stepIndex <= GetStepIndex(activeStep) ? ButtonColor.Primary : ButtonColor.Secondary;
+    }
+
+    private string GetLineClass(int stepIndex)
+    {
+        return stepIndex <= GetStepIndex(activeStep) ? "bg-primary" : "bg-secondary";
+    }
+
+    private void Next()
+    {
+        var currentStep = GetStepIndex(activeStep);
+
+        if (currentStep < Steps.Count)
+        {
+            activeStep = Steps[currentStep].Id;
+        }
+    }
+
+    private void Previous()
+    {
+        var currentStep = GetStepIndex(activeStep);
+
+        if (currentStep > 1)
+        {
+            activeStep = Steps[currentStep - 2].Id;
+        }
+    }
+
+    private int GetStepIndex(string stepId)
+    {
+        var step = Steps.FirstOrDefault(s => s.Id == stepId);
+        return step?.Index ?? 1;
+    }
+
+    public class Step
+    {
+        public string Id { get; set; }
+        public int Index { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public IconName Icon { get; set; }
+    }
+}

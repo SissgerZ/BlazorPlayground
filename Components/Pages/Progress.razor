@@ -1,0 +1,17 @@
+﻿@page "/progressbar"
+
+@using BlazorBootstrap
+
+@rendermode InteractiveServer
+
+<ProgressBarComponent Steps="Steps"></ProgressBarComponent>
+
+@code {
+    private List<ProgressBarComponent.Step> Steps = new List<ProgressBarComponent.Step>
+    {
+        new ProgressBarComponent.Step { Id = "step1", Index = 1, Title = "Step 1", Description = "Description for step 1", Icon = IconName.Pen },
+        new ProgressBarComponent.Step { Id = "step2", Index = 2, Title = "Step 2", Description = "Description for step 2", Icon = IconName.Stack },
+        new ProgressBarComponent.Step { Id = "step3", Index = 3, Title = "Step 3", Description = "Description for step 3", Icon = IconName.Person },
+        new ProgressBarComponent.Step { Id = "step4", Index = 4, Title = "Step 4", Description = "Description for step 4", Icon = IconName.Tv }
+    };
+}

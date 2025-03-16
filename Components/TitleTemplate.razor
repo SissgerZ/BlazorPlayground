@@ -1,0 +1,9 @@
+﻿@using BlazorBootstrap
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public IconName Icon { get; set; }
+}
+
+<Icon Name="@(Icon)"></Icon>
+<div>@ChildContent</div>
