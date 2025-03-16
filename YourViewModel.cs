@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorApp3;
+namespace BlazorPlayground;
 
 public class YourViewModel
 {

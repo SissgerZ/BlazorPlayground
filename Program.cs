@@ -1,6 +1,6 @@
-using BlazorApp3.Components;
-using BlazorApp3.Services;
+using BalzorPlayground.Components;
 using BlazorBootstrap;
+using BlazorPlayground.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

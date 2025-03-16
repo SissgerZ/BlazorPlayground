@@ -1,4 +1,4 @@
-﻿namespace BlazorApp3;
+﻿namespace BlazorPlayground;
 
 using System.ComponentModel.DataAnnotations;
 

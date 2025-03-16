@@ -1,6 +1,6 @@
 ﻿using BlazorBootstrap;
 
-namespace BlazorApp3.Services;
+namespace BlazorPlayground.Services;
 
 public class AlertService
 {
