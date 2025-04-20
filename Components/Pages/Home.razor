@@ -22,11 +22,12 @@
 <div class="mb-4">
     <Switch @ref="switch1" @bind-Value="agree" />
 
+    <ThemeSwitcher />
+
     <Button @onclick="Enable">
         Test
     </Button>
 </div>
-
 
 @code {
     private Switch switch1 = default!;

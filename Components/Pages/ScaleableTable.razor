@@ -1,0 +1,137 @@
+﻿@page "/Tables"
+
+@using BlazorBootstrap
+
+@rendermode InteractiveServer
+
+<style>
+    /*   .table-bordered > :not(caption) > * {
+        border-width: 0px 0px;
+        }
+
+        .table-bordered > :not(caption) > * > * {
+        border-width: 0px 0px;
+        } */
+
+    .bb-table-sticky > thead > tr > th > div > ul.dropdown-menu.show {
+        transform: translate(7px, 55px) !important;
+        -webkit-box-shadow: 0px 13px 30px 5px rgba(0,0,0,0.25);
+        box-shadow: 0px 13px 30px 5px rgba(0,0,0,0.25);
+    }
+
+    .table-responsive {
+        min-height: 80vh;
+        border-top-left-radius: 0.375rem;
+        border-top-right-radius: 0.375rem;
+        border-bottom-left-radius: 0.375rem;
+        border-bottom-right-radius: 0.375rem;
+        border-bottom: 1px solid rgba(222, 226, 230, 0.85);
+    }
+
+    .table-bordered > :not(caption) > tr:last-of-type {
+        border-width: 0px 0px;
+    }
+
+    .bb-table-sticky > thead > tr:first-of-type > th:first-of-type {
+        border-top-left-radius: 0.375rem;
+    }
+
+    .bb-table-sticky > thead > tr:first-of-type > th:last-of-type {
+        border-top-right-radius: 0.375rem;
+    }
+
+    .bb-table-sticky > thead > tr:first-of-type > th {
+        background-color: rgb(55,55,55);
+        color: white;
+    }
+
+    .bb-table-sticky > thead > tr:nth-child(2) > th {
+        background-color: lightgray;
+        color: white;
+    }
+
+    .bb-grid-filter {
+        background-color: darkorange;
+        color: white;
+        border-color: darkorange;
+    }
+
+        .bb-grid-filter:hover {
+            background-color: rgb(235, 120, 0);
+            color: white;
+            border-color: rgb(235, 120, 0);
+        }
+
+        .bb-grid-filter:active {
+            background-color: rgb(235, 120, 0) !important;
+            color: white !important;
+            border-color: rgb(235, 120, 0) !important;
+        }
+
+    .btn.show {
+        background-color: rgb(235, 120, 0);
+        color: white;
+        border-color: rgb(235, 120, 0);
+    }
+
+    /*     .bb-table-sticky > thead > tr > th {
+        background-color: lightgray;
+        } */
+
+    /*     .table-responsive {
+        -webkit-box-shadow: -5px 11px 22px -4px rgba(0,0,0,0.5) !important;
+        box-shadow: -5px 11px 22px -4px rgba(0,0,0,0.5) !important;
+        } */
+
+</style>
+
+<PageTitle>Home</PageTitle>
+
+<div class="pb-3">
+    <Grid TItem="Employee4"
+          Class="table table-hover table-bordered table-striped"
+          DataProvider="EmployeesDataProvider"
+          PageSize="25"
+          AllowFiltering="true"
+          FixedHeader="true"
+          AllowPaging="true"
+          AllowSorting="true"
+          Responsive="true">
+        <GridColumns>
+            <GridColumn TItem="Employee4" HeaderText="Id" PropertyName="Id">
+                @context.Id
+            </GridColumn>
+            <GridColumn TItem="Employee4" HeaderText="Employee Name" PropertyName="Name">
+                @context.Name
+            </GridColumn>
+            <GridColumn TItem="Employee4" HeaderText="Designation" PropertyName="Designation">
+                @context.Designation
+            </GridColumn>
+        </GridColumns>
+    </Grid>
+</div>
+
+@code {
+    private IEnumerable<Employee4> employees = default!;
+
+    private async Task<GridDataProviderResult<Employee4>> EmployeesDataProvider(GridDataProviderRequest<Employee4> request)
+    {
+        if (employees is null)
+            employees = GetEmployees();
+
+        return await Task.FromResult(request.ApplyTo(employees));
+    }
+
+    private IEnumerable<Employee4> GetEmployees() =>
+        Enumerable.Range(0, 100).Select(_ =>
+            new Employee4 { Id = 107, Name = "Alice", Designation = "AI Engineer", DOJ = new DateOnly(1998, 11, 17), IsActive = true });
+
+    public class Employee4
+    {
+        public int? Id { get; set; }
+        public string Name { get; set; }
+        public string Designation { get; set; }
+        public DateOnly? DOJ { get; set; }
+        public bool IsActive { get; set; }
+    }
+}
