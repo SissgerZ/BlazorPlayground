@@ -25,6 +25,19 @@
     <!-- Add sortable.js reference if SortableList component is used in your application. -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
+
+    <script>
+        // Find the <tbody> element inside an element with the class "table-responsive"
+        // and scroll that element to the top smoothly.
+        function scrollToTopTableBody() {
+            var tableBody = document.querySelector(".table-responsive");
+            if (tableBody) {
+                tableBody.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                console.warn("No <tbody> element found inside .table-responsive.");
+            }
+        }
+    </script>
 </body>
 
 </html>
